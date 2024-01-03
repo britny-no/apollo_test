@@ -1,0 +1,28 @@
+{
+  "name": "graphql-server-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run compile && node ./dist/index.js",
+    "dev": "nodemon -e ts,json  --exec 'npm run build && node ./dist/index.js'",
+    "migrate": "./node_modules/.bin/prisma migrate dev",
+    "generate": "./node_modules/.bin/prisma generate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.10.0",
+    "@prisma/client": "^5.7.1",
+    "graphql": "^16.8.1",
+    "nodemon": "^3.0.2",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.6",
+    "prisma": "^5.7.1",
+    "typescript": "^5.3.3"
+  }
+}
