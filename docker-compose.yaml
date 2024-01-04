@@ -1,8 +1,10 @@
-version: "3.2"
+version: "3.5"
 
 services:
   db:
-    platform: linux/x86_64
+    # networks:
+    #   - network
+    # platform: linux/x86_64
     image: mysql:8.0
     container_name: appsDB
     restart: always
@@ -10,26 +12,20 @@ services:
       - "3306"
     ports:
       - "3306:3306"
+    env_file:
+      - docker.env
     environment:
-      MYSQL_ROOT_PASSWORD: helloworld
       TZ: Asia/Seoul
     volumes:
       - ./mysql:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+    command:
+      - --default-authentication-plugin=mysql_native_password
 
-  # mongo:
-  #   image: mongo
-  #   container_name: mongoDB
-  #   restart: always
-  #   ports:
-  #     - "27017:27017"
-  #   volumes:
-  #     - mongo_data:/data/db
-
-  app:
+  phpmyadmin:
+    # networks:
+    #   - network
     depends_on:
       - db
-      # - mongo
     image: phpmyadmin/phpmyadmin
     container_name: phpmyadmin
     restart: always
@@ -38,20 +34,29 @@ services:
     environment:
       PMA_HOST: db
 
-  # redis:
-  #   image: redis
-  #   container_name: redisDB
-  #   restart: always
-  #   ports:
-  #     - "6379:6379"
-
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   restart: always
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
+  # app:
+  #   platform: linux/amd64
+  #   networks:
+  #     - network
+  #   depends_on:
+  #     - db
+  #   build:
+  #     context: ./project
+  #     dockerfile: Dockerfile
   #   environment:
-  #     RABBITMQ_DEFAULT_USER: guest
-  #     RABBITMQ_DEFAULT_PASS: helloworld
+  #     NODE_ENV: production
+  #   container_name: project
+  #   restart: always
+  #   ports:
+  #     - "3000:3000" # Adjust the port as needed
+  #   volumes:
+  #     - ./project:/project
+  #   command:
+  #     - bash
+  #     - -c
+  #     - |
+  #       /project/wait-for-it.sh appsDB:3306 -t 10
+  #       npm run start
+# networks:
+#   network:
+#     driver: bridge
