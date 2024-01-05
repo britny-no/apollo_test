@@ -1,5 +1,5 @@
 [실행순서]
-0. docker-compose up으로 mysql 환경 조성
-1. ./project/.env 설정
+0. ./docker.env, ./project/.env 설정
+1. docker-compose up
 2. cd project && npm i && npm run dev
 *prisma/client error로 container에서 app 띄우진 못했습니다
